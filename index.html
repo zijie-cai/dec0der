@@ -10,8 +10,8 @@
             --bg: #050505;
             --card-bg: #121212;
             --border: #262626;
-            --accent: #a3e635; /* Brighter Lime matching app bottom panel */
-            --orange: #fb923c; /* Matching the dial/power icon */
+            --accent: #a3e635; /* Brighter Lime */
+            --orange: #fb923c; /* Power Orange */
             --text: #ffffff;
             --text-muted: #888888;
             --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -23,14 +23,13 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Strict Non-Scrollable Layout */
         html, body {
             width: 100%;
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Prevents scrolling */
-            position: fixed; /* Prevents rubber-banding on iOS */
+            overflow: hidden;
+            position: fixed;
         }
 
         body {
@@ -45,12 +44,12 @@
         }
 
         .container {
-            max-width: 360px;
+            max-width: 340px; /* Narrower for better mobile proportion */
             width: 100%;
             padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 28px;
+            gap: 20px; /* Tighter layout */
             animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -59,24 +58,25 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- HEADER / LOGO (Splash Screen Style) --- */
+        /* --- HEADER --- */
         .header {
             text-align: center;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         .logo {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.8rem;
+            font-size: 2.6rem;
             font-weight: 800;
             letter-spacing: 3px;
-            color: var(--accent); /* Light green text */
+            color: var(--accent);
             line-height: 1;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
-        /* Power Button Icon construction */
         .power-icon {
             position: relative;
             width: 0.72em;
@@ -114,28 +114,29 @@
         }
 
         .subtitle {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 3px;
-            margin-top: 12px;
+            margin-top: 10px;
             font-weight: 600;
+            user-select: none;
         }
 
-        /* --- SECTIONS --- */
-        
+        /* --- CONTROLS --- */
         .label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 1.5px;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: block;
             padding-left: 4px;
+            user-select: none;
         }
 
-        /* Contact Button - Styled like "Control" buttons */
+        /* Primary Action Button */
         .control-btn {
             display: flex;
             flex-direction: column;
@@ -143,72 +144,107 @@
             justify-content: center;
             background-color: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
+            border-radius: 14px;
+            padding: 22px 16px; /* Reduced visual bulk from 32px */
             text-decoration: none;
-            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
             overflow: hidden;
+            transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
         }
 
-        .control-btn:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-            background-color: #1a1a1a;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
-
-        .control-btn:active {
-            transform: translateY(0);
-            border-color: #333;
-        }
-
+        /* Top Indicator Bar */
         .control-btn::before {
             content: '';
             position: absolute;
             top: 0;
-            width: 40px;
-            height: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 32px;
+            height: 3px;
             background-color: var(--accent);
-            opacity: 0.5;
-            transition: width 0.3s ease;
+            opacity: 0.6;
+            transition: width 0.3s ease, opacity 0.3s ease, box-shadow 0.3s;
+            border-radius: 0 0 2px 2px;
+            box-shadow: 0 0 5px rgba(163, 230, 53, 0.1);
         }
 
-        .control-btn:hover::before {
-            width: 80px;
-            opacity: 1;
+        /* Content Styling */
+        .icon-mail {
+            width: 26px; /* Slightly smaller icon */
+            height: 26px;
+            stroke: #666;
+            stroke-width: 1.5;
+            fill: none;
+            transition: stroke 0.2s, transform 0.2s;
+            margin-bottom: 8px;
         }
 
         .email-text {
             color: var(--accent);
             font-family: var(--font-mono);
-            font-size: 1rem;
+            font-size: 0.9rem; /* Clean, legible size */
             font-weight: 600;
             letter-spacing: 0.5px;
-            margin-top: 8px;
-        }
-        
-        .icon-mail {
-            width: 24px;
-            height: 24px;
-            stroke: #666;
-            stroke-width: 2;
-            fill: none;
-            transition: stroke 0.2s;
+            transition: color 0.2s;
         }
 
-        .control-btn:hover .icon-mail {
+        /* --- INTERACTION STATES --- */
+
+        /* Laptop/Cursor Hover - Lift & Glow */
+        @media (hover: hover) {
+            .control-btn:hover {
+                border-color: var(--accent);
+                transform: translateY(-2px);
+                background-color: #161616;
+                box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+            }
+            .control-btn:hover::before {
+                width: 60px; /* Partial expansion */
+                opacity: 1;
+                box-shadow: 0 0 12px var(--accent);
+            }
+            .control-btn:hover .icon-mail {
+                stroke: #fff;
+                transform: scale(1.1);
+            }
+            .control-btn:hover .email-text {
+                color: #fff;
+            }
+        }
+
+        /* Mobile/Touch Active - Tactile Press */
+        .control-btn:active {
+            transform: scale(0.96); /* Shrink */
+            background-color: #0a0a0a;
+            border-color: var(--accent);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5); /* Inner shadow for press feel */
+        }
+        .control-btn:active::before {
+            width: 100%; /* Full expansion indicating activation */
+            opacity: 1;
+            box-shadow: 0 0 15px var(--accent);
+            transition-duration: 0.1s;
+        }
+        .control-btn:active .icon-mail {
             stroke: #fff;
+            transform: scale(0.9);
+        }
+        .control-btn:active .email-text {
+            color: #fff;
         }
 
-        /* Privacy Panel - Styled like "Mission Goal" */
+        /* --- INFO PANEL --- */
         .mission-panel {
             background-color: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 20px;
+            padding: 22px 20px; /* Matches button height visually */
             position: relative;
-            background-image: radial-gradient(#262626 1px, transparent 1px);
+            background-image: radial-gradient(#222 1px, transparent 1px);
             background-size: 6px 6px;
         }
 
@@ -216,25 +252,26 @@
             content: '';
             position: absolute;
             left: 0;
-            top: 12px;
-            bottom: 12px;
+            top: 10px;
+            bottom: 10px;
             width: 3px;
             background-color: var(--accent);
             border-radius: 0 2px 2px 0;
+            opacity: 0.8;
         }
 
         .mission-title {
             color: var(--text-muted);
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .mission-text {
-            color: var(--text);
-            font-size: 0.9rem;
+            color: #e5e5e5;
+            font-size: 0.85rem;
             line-height: 1.5;
         }
         
@@ -245,12 +282,13 @@
 
         /* Footer */
         footer {
-            margin-top: 12px;
+            margin-top: 16px;
             text-align: center;
             color: #333;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-family: var(--font-mono);
             letter-spacing: 1px;
+            user-select: none;
         }
 
     </style>
@@ -278,8 +316,8 @@
         </header>
 
         <div>
-            <span class="label">Direct Contact</span>
-            <a href="mailto:DEC0DER183@GMAIL.COM" class="control-btn">
+            <span class="label">Contact Link</span>
+            <a href="mailto:DEC0DER183@GMAIL.COM" class="control-btn" role="button" aria-label="Email Support">
                 <svg class="icon-mail" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="2" y="4" width="20" height="16" rx="2"></rect>
                     <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
