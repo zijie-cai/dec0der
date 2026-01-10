@@ -2,80 +2,98 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#080808">
     <title>DEC0DER Support</title>
     <style>
         :root {
             --bg: #050505;
-            --card-bg: #111111;
-            --border: #222222;
-            --accent: #84cc16; /* Matches the green panel */
-            --accent-dim: rgba(132, 204, 22, 0.1);
-            --orange: #f97316; /* Matches the dial/power icon */
+            --card-bg: #121212;
+            --border: #262626;
+            --accent: #a3e635; /* Brighter Lime matching app bottom panel */
+            --orange: #fb923c; /* Matching the dial/power icon */
             --text: #ffffff;
             --text-muted: #888888;
+            --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: "SF Mono", "Monaco", "Inconsolata", "Fira Mono", monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Strict Non-Scrollable Layout */
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevents scrolling */
+            position: fixed; /* Prevents rubber-banding on iOS */
         }
 
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 48px 20px;
+            font-family: var(--font-main);
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
+            justify-content: center;
             -webkit-font-smoothing: antialiased;
         }
 
         .container {
-            max-width: 420px;
+            max-width: 360px;
             width: 100%;
+            padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 40px;
+            gap: 28px;
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Logo Construction - Matches App Splash Screen */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- HEADER / LOGO (Splash Screen Style) --- */
         .header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 8px;
         }
 
         .logo {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 2.8rem;
             font-weight: 800;
-            letter-spacing: 2px;
-            color: var(--accent);
+            letter-spacing: 3px;
+            color: var(--accent); /* Light green text */
             line-height: 1;
-            text-shadow: 0 0 20px rgba(132, 204, 22, 0.15);
         }
 
-        /* Power Button 'O' */
+        /* Power Button Icon construction */
         .power-icon {
             position: relative;
-            width: 0.75em;
-            height: 0.75em;
+            width: 0.72em;
+            height: 0.72em;
             border: 0.13em solid var(--orange);
             border-radius: 50%;
-            margin: 0 6px;
+            margin: 0 5px;
             box-sizing: border-box;
             display: inline-block;
-            vertical-align: middle;
-            transform: translateY(-0.04em);
-            box-shadow: 0 0 15px rgba(249, 115, 22, 0.2);
+            transform: translateY(-0.03em);
+            box-shadow: 0 0 20px rgba(251, 146, 60, 0.25);
         }
 
         .power-icon::before {
             content: '';
             position: absolute;
-            top: -0.15em;
+            top: -0.13em;
             left: 50%;
             transform: translateX(-50%);
             width: 0.25em;
@@ -86,128 +104,153 @@
         .power-icon::after {
             content: '';
             position: absolute;
-            top: -0.25em;
+            top: -0.22em;
             left: 50%;
             transform: translateX(-50%);
             width: 0.13em;
-            height: 0.45em;
+            height: 0.42em;
             background-color: var(--orange);
             border-radius: 2px;
         }
 
         .subtitle {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 4px;
-            margin-top: 16px;
+            letter-spacing: 3px;
+            margin-top: 12px;
             font-weight: 600;
         }
 
-        /* Section Styling */
-        .card {
+        /* --- SECTIONS --- */
+        
+        .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: block;
+            padding-left: 4px;
+        }
+
+        /* Contact Button - Styled like "Control" buttons */
+        .control-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             background-color: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 28px;
+            border-radius: 16px;
+            padding: 24px;
+            text-decoration: none;
+            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
-        
-        /* Subtle green top border like the app tabs */
-        .card::before {
+
+        .control-btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            background-color: #1a1a1a;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .control-btn:active {
+            transform: translateY(0);
+            border-color: #333;
+        }
+
+        .control-btn::before {
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
-            right: 0;
+            width: 40px;
             height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            background-color: var(--accent);
             opacity: 0.5;
+            transition: width 0.3s ease;
         }
 
-        h2 {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 0 0 16px 0;
-            font-weight: 700;
+        .control-btn:hover::before {
+            width: 80px;
+            opacity: 1;
         }
 
-        /* Contact Button - Styled like a game tile */
-        .contact-link {
-            display: block;
-            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .contact-link:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-        }
-
-        .contact-link:active {
-            transform: translateY(0);
-        }
-
-        .email-label {
-            display: block;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            margin-bottom: 6px;
-        }
-
-        .email-address {
+        .email-text {
             color: var(--accent);
-            font-family: monospace; /* Digital look */
-            font-size: 1.1rem;
+            font-family: var(--font-mono);
+            font-size: 1rem;
             font-weight: 600;
             letter-spacing: 0.5px;
-        }
-
-        /* Privacy Policy */
-        .policy-text {
-            font-size: 0.9rem;
-            color: #a0a0a0;
-            line-height: 1.6;
+            margin-top: 8px;
         }
         
-        .policy-text strong {
-            color: #fff;
-            display: block;
-            margin-bottom: 12px;
-            font-size: 1rem;
+        .icon-mail {
+            width: 24px;
+            height: 24px;
+            stroke: #666;
+            stroke-width: 2;
+            fill: none;
+            transition: stroke 0.2s;
         }
 
-        .policy-text p {
-            margin: 0 0 16px 0;
+        .control-btn:hover .icon-mail {
+            stroke: #fff;
         }
 
-        .policy-text p:last-child {
-            margin-bottom: 0;
+        /* Privacy Panel - Styled like "Mission Goal" */
+        .mission-panel {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            background-image: radial-gradient(#262626 1px, transparent 1px);
+            background-size: 6px 6px;
         }
 
+        .mission-panel::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 12px;
+            bottom: 12px;
+            width: 3px;
+            background-color: var(--accent);
+            border-radius: 0 2px 2px 0;
+        }
+
+        .mission-title {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .mission-text {
+            color: var(--text);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Footer */
         footer {
-            margin-top: auto;
+            margin-top: 12px;
+            text-align: center;
             color: #333;
             font-size: 0.7rem;
-            font-family: monospace;
-            padding-top: 20px;
+            font-family: var(--font-mono);
             letter-spacing: 1px;
-        }
-        
-        /* Selection color */
-        ::selection {
-            background: var(--accent);
-            color: #000;
         }
 
     </style>
@@ -231,26 +274,29 @@
                 <div class="power-icon"></div>
                 <span>DER</span>
             </div>
-            <div class="subtitle">System Support</div>
+            <div class="subtitle">Support Portal</div>
         </header>
 
-        <main>
-            <div class="card" style="margin-bottom: 30px;">
-                <h2>Communication Channel</h2>
-                <a href="mailto:DEC0DER183@GMAIL.COM" class="contact-link">
-                    <span class="email-label">Official Support</span>
-                    <span class="email-address">DEC0DER183@GMAIL.COM</span>
-                </a>
-            </div>
+        <div>
+            <span class="label">Direct Contact</span>
+            <a href="mailto:DEC0DER183@GMAIL.COM" class="control-btn">
+                <svg class="icon-mail" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                </svg>
+                <span class="email-text">DEC0DER183@GMAIL.COM</span>
+            </a>
+        </div>
 
-            <div class="card">
-                <h2>Privacy Protocol</h2>
-                <div class="policy-text">
-                    <strong>No Data Collection</strong>
-                    <p>DEC0DER does not collect personal data and runs entirely on your device.</p>
+        <div>
+            <span class="label">Privacy Protocol</span>
+            <div class="mission-panel">
+                <div class="mission-title">Mission Goal</div>
+                <div class="mission-text">
+                    This application operates <span class="highlight">100% locally</span>. We do not collect, store, or transmit any user data or analytics.
                 </div>
             </div>
-        </main>
+        </div>
 
         <footer>
             &copy; 2025 DEC0DER SYSTEM
