@@ -30,19 +30,18 @@
             color: #000;
         }
 
-        /* Layout - Allow scrolling if content is tall, but hide scrollbars */
+        /* Layout - Strict Non-Scrollable */
         html, body {
             width: 100%;
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
-            overflow-y: auto;
-            scrollbar-width: none; /* Firefox */
+            overflow: hidden; /* Prevents scrolling completely */
+            position: fixed; /* Prevents rubber-banding/bouncing on iOS */
         }
         
         body::-webkit-scrollbar { 
-            display: none; /* Chrome/Safari */
+            display: none;
         }
 
         body {
@@ -52,28 +51,28 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* Centers vertically if content is short */
-            min-height: 100%;
+            justify-content: center;
             -webkit-font-smoothing: antialiased;
         }
 
         .container {
             max-width: 360px;
             width: 100%;
-            padding: 40px 24px; /* More top/bottom padding for scroll */
+            /* Safe area padding for notched devices */
+            padding: env(safe-area-inset-top) 24px env(safe-area-inset-bottom) 24px;
             display: flex;
             flex-direction: column;
-            gap: 32px; /* Increased gap for better separation of sections */
+            gap: 32px;
             animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            margin: auto; /* Keeps it centered in flex body */
+            margin: auto;
         }
         
         /* Responsive tweak for smaller vertical screens */
         @media (max-height: 700px) {
             .container {
-                padding-top: 24px;
-                padding-bottom: 24px;
-                gap: 24px;
+                gap: 20px;
+                padding-top: 16px;
+                padding-bottom: 16px;
             }
         }
 
@@ -112,7 +111,7 @@
             margin: 0 5px;
             box-sizing: border-box;
             display: inline-block;
-            transform: translateY(-0.03em);
+            transform: translateY(0.06em); /* Shifted down slightly per request */
             box-shadow: 0 0 20px rgba(251, 146, 60, 0.3);
         }
 
