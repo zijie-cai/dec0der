@@ -14,7 +14,7 @@
     --accent-glow: rgba(163, 230, 53, 0.4);
     --orange: #fb923c;
     --text: #ffffff;
-    --text-muted: #666666;
+    --text-muted: #888888;
     --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --font-mono: "SF Mono", "Monaco", "Inconsolata", "Fira Mono", monospace;
 }
@@ -29,7 +29,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Non-scrollable as requested */
+    overflow: hidden; /* Locked Layout - Non Scrollable */
     background-color: var(--bg);
     color: var(--text);
     font-family: var(--font-main);
@@ -44,7 +44,7 @@ body::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at center, transparent 0%, #000 120%);
+    background: radial-gradient(circle at center, transparent 0%, #000 130%);
     pointer-events: none;
     z-index: -1;
 }
@@ -55,7 +55,7 @@ body::before {
     padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 28px; /* Slightly tighter gap for single screen fit */
+    gap: 28px;
     opacity: 0;
     animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     position: relative;
@@ -74,36 +74,28 @@ body::before {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 3rem; /* Slightly larger */
+    font-size: 3rem;
     font-weight: 900;
     letter-spacing: 4px;
     color: var(--accent);
     line-height: 1;
     user-select: none;
-    text-shadow: 0 0 20px var(--accent-glow);
+    text-shadow: 0 0 25px var(--accent-glow);
 }
 
-.power-icon {
-    position: relative;
-    width: 0.65em;
-    height: 0.65em;
-    border: 0.14em solid var(--orange);
-    border-radius: 50%;
-    margin: 0 8px;
-    /* Adjusted: Previously -0.06em. Moving down approx 3px relative to 3rem font */
-    transform: translateY(0.04em); 
-    box-shadow: 0 0 15px rgba(251, 146, 60, 0.4);
-}
-
-.power-icon::before {
-    content: ''; position: absolute; top: -0.14em; left: 50%; transform: translateX(-50%);
-    width: 0.3em; height: 0.3em; background-color: var(--bg);
-}
-
-.power-icon::after {
-    content: ''; position: absolute; top: -0.25em; left: 50%; transform: translateX(-50%);
-    width: 0.14em; height: 0.45em; background-color: var(--orange); border-radius: 2px;
-    box-shadow: 0 0 5px rgba(251, 146, 60, 0.8);
+/* Power Icon: SVG implementation for perfect transparency (no black box artifacts) */
+.power-icon-svg {
+    width: 0.68em;
+    height: 0.68em;
+    margin: 0 10px;
+    color: var(--orange);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3;
+    stroke-linecap: round;
+    /* Positioned down 3px relative to optical center as requested */
+    transform: translateY(0.12em); 
+    filter: drop-shadow(0 0 6px rgba(251, 146, 60, 0.5));
 }
 
 .subtitle {
@@ -133,7 +125,6 @@ body::before {
     cursor: pointer; user-select: none; border: 2px solid var(--accent);
 }
 .store-btn:active { transform: scale(0.97); filter: brightness(0.9); }
-/* Grid Animation */
 .store-btn::before {
     content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
     background-image: 
@@ -165,8 +156,6 @@ body::before {
 }
 .control-btn:hover { background-color: #1a1a1a; border-color: rgba(163, 230, 53, 0.2); }
 .control-btn:active { transform: scale(0.97); background-color: #080808; border-color: var(--accent); }
-
-/* Status Light */
 .control-btn::before {
     content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
     width: 40px; height: 3px; background-color: var(--accent);
@@ -174,8 +163,6 @@ body::before {
     transition: width 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s; z-index: 2;
 }
 .control-btn:active::before { width: 60%; height: 4px; box-shadow: 0 0 30px var(--accent); }
-
-/* Scanline */
 .control-btn::after {
     content: ''; position: absolute; inset: 0;
     background: linear-gradient(to bottom, transparent 0%, rgba(163, 230, 53, 0.02) 50%, transparent 100%);
@@ -194,22 +181,22 @@ body::before {
 
 /* --- PRIVACY PANEL --- */
 .mission-panel {
-    background-color: rgba(18, 18, 18, 0.6); /* Slightly transparent */
+    background-color: rgba(18, 18, 18, 0.6);
     border: 1px solid var(--border);
-    border-radius: 14px; padding: 18px 22px; position: relative;
+    border-radius: 14px; padding: 20px 22px; position: relative;
     background-image: radial-gradient(#262626 1px, transparent 1px); background-size: 8px 8px;
     backdrop-filter: blur(5px);
 }
 .mission-panel::after {
-    content: ''; position: absolute; left: 0; top: 16px; bottom: 16px; width: 3px;
+    content: ''; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px;
     background-color: var(--accent); border-radius: 0 2px 2px 0;
     box-shadow: 0 0 10px rgba(163, 230, 53, 0.3);
 }
 .mission-title {
-    color: var(--text-muted); font-size: 0.65rem; text-transform: uppercase;
-    letter-spacing: 2px; font-weight: 800; margin-bottom: 6px;
+    color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase;
+    letter-spacing: 2px; font-weight: 800; margin-bottom: 8px;
 }
-.mission-text { color: #ddd; font-size: 0.85rem; line-height: 1.5; font-weight: 400; }
+.mission-text { color: #ddd; font-size: 0.9rem; line-height: 1.5; font-weight: 400; }
 .highlight { color: var(--accent); font-weight: 700; text-shadow: 0 0 8px rgba(163,230,53,0.2); }
 
 /* --- FOOTER --- */
@@ -228,7 +215,11 @@ footer {
     <header class="header">
         <div class="logo">
             <span>DEC</span>
-            <div class="power-icon"></div>
+            <!-- SVG Power Icon: Transparent, Scalable, Artifact-free -->
+            <svg class="power-icon-svg" viewBox="0 0 24 24">
+                <path d="M12 2v8"></path>
+                <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+            </svg>
             <span>DER</span>
         </div>
         <div class="subtitle">Official Terminal</div>
@@ -239,7 +230,6 @@ footer {
         <div class="label">System Acquisition</div>
         <a href="#" class="store-btn">
             <div class="badge">V1.0</div>
-            <!-- Apple Icon -->
             <svg class="icon-svg" style="width: 30px; height: 30px; fill: #000;" viewBox="0 0 24 24">
                 <path d="M17.1,12.7c0-2.6,2.1-3.8,2.2-3.9c-1.2-1.7-3.1-2-3.7-2c-1.6-0.2-3.1,0.9-3.9,0.9c-0.8,0-2-0.9-3.3-0.9 c-1.7,0-3.3,1-4.2,2.6c-1.8,3.1-0.5,7.6,1.2,10.1c0.9,1.2,1.9,2.6,3.2,2.5c1.3-0.1,1.8-0.8,3.3-0.8c1.6,0,2,0.8,3.4,0.8 c1.4,0,2.3-1.2,3.1-2.4c1-1.4,1.4-2.8,1.4-2.9C21,15.7,17.1,14.2,17.1,12.7 M14.3,5.3c0.7-0.9,1.2-2.1,1.1-3.3 c-1.1,0-2.4,0.7-3.1,1.6c-0.7,0.8-1.2,2.1-1.1,3.2C12.3,6.9,13.6,6.2,14.3,5.3"/>
             </svg>
@@ -254,7 +244,6 @@ footer {
     <div>
         <div class="label">Direct Contact</div>
         <a href="mailto:DEC0DER183@GMAIL.COM" class="control-btn">
-            <!-- Mail Icon -->
             <svg class="icon-svg" style="stroke: #777; stroke-width: 2; fill: none;" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="2" y="4" width="20" height="16" rx="2"></rect>
                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
@@ -269,8 +258,7 @@ footer {
         <div class="mission-panel">
             <div class="mission-title">Mission Goal</div>
             <div class="mission-text">
-                This application operates <span class="highlight">100% locally</span>.<br>
-                We do not collect, store, or transmit any user data or analytics.
+                This application operates <span class="highlight">100% locally</span>. We do not collect, store, or transmit any user data or analytics.
             </div>
         </div>
     </div>
