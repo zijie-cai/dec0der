@@ -12,7 +12,6 @@
 --border: #262626;
 --accent: #a3e635; /* Brighter Lime matching app bottom panel */
 --accent-dark: #65a30d;
---accent-light: #bfff45;
 --orange: #fb923c; /* Matching the dial/power icon */
 --text: #ffffff;
 --text-muted: #888888;
@@ -23,17 +22,17 @@
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
-    outline: none;
 }
 
-/* Layout - Strict Non-Scrollable */
+/* Layout - Allow scrolling if content is tall, but hide scrollbars */
 html, body {
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Prevent scrolling */
-    position: fixed; /* Lock viewport */
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
 }
 
 body::-webkit-scrollbar { 
@@ -42,44 +41,30 @@ body::-webkit-scrollbar {
 
 body {
     background-color: var(--bg);
-    /* Premium Refinement: Radial Gradient */
-    background-image: radial-gradient(circle at 50% 30%, #111111 0%, var(--bg) 80%);
     color: var(--text);
     font-family: var(--font-main);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Centers vertically */
+    justify-content: center; /* Centers vertically if content is short */
     min-height: 100%;
     -webkit-font-smoothing: antialiased;
-}
-
-/* Premium Refinement: Cinematic Noise Texture */
-body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 999;
 }
 
 .container {
     max-width: 360px;
     width: 100%;
-    padding: 40px 24px; /* Preserved padding from provided code */
+    padding: 40px 24px; /* More top/bottom padding for scroll */
     display: flex;
     flex-direction: column;
-    gap: 32px; /* Preserved gap */
+    gap: 32px; /* Increased gap for better separation of sections */
     animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    margin: auto; /* Keeps it centered */
-    position: relative;
-    z-index: 1;
+    margin: auto; /* Keeps it centered in flex body */
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); filter: blur(4px); }
-    to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* --- HEADER / LOGO --- */
@@ -99,8 +84,6 @@ body::after {
     line-height: 1;
     user-select: none;
     -webkit-user-select: none;
-    /* Refinement: Subtle Glow */
-    text-shadow: 0 0 25px rgba(163, 230, 53, 0.2);
 }
 
 /* Power Button Icon construction */
@@ -113,9 +96,8 @@ body::after {
     margin: 0 5px;
     box-sizing: border-box;
     display: inline-block;
-    /* Shifted down 2px from -0.06em to -0.015em */
-    transform: translateY(-0.015em); 
-    box-shadow: 0 0 20px rgba(251, 146, 60, 0.3);
+    transform: translateY(-0.06em); /* Shifted up slightly per request */
+    box-shadow: 0 0 20px rgba(251, 146, 60, 0.25);
 }
 
 .power-icon::before {
@@ -127,8 +109,6 @@ body::after {
     width: 0.25em;
     height: 0.25em;
     background-color: var(--bg);
-    /* Refinement: Fade mask */
-    background: linear-gradient(to bottom, #111111, transparent);
 }
 
 .power-icon::after {
@@ -151,7 +131,6 @@ body::after {
     margin-top: 12px;
     font-weight: 600;
     user-select: none;
-    opacity: 0.8;
 }
 
 /* --- SECTIONS --- */
@@ -167,14 +146,14 @@ body::after {
     user-select: none;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
 }
 
 .label::after {
     content: '';
     flex: 1;
     height: 1px;
-    background: linear-gradient(90deg, #333, transparent);
+    background: linear-gradient(90deg, var(--border), transparent);
 }
 
 /* ========================================= */
@@ -186,8 +165,7 @@ body::after {
     align-items: center;
     justify-content: center;
     gap: 16px;
-    /* Refinement: Subtle linear gradient for depth */
-    background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 100%);
+    background-color: var(--accent); /* High contrast lime */
     color: #000; /* Black text on lime */
     text-decoration: none;
     padding: 20px;
@@ -198,7 +176,7 @@ body::after {
     cursor: pointer;
     user-select: none;
     -webkit-user-select: none;
-    /* Removed border to let gradient shine */
+    border: 2px solid var(--accent); /* Solid border */
 }
 
 /* Interaction */
@@ -218,8 +196,8 @@ body::after {
     
     /* Clean technical grid lines */
     background-image: 
-        linear-gradient(rgba(0,0,0,0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,0,0,0.08) 1px, transparent 1px);
+        linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
     background-size: 24px 24px;
     
     /* Slight rotation for dynamic feel */
@@ -272,11 +250,11 @@ body::after {
     background: #000;
     color: var(--accent);
     font-size: 0.5rem;
-    padding: 3px 7px;
-    border-radius: 6px;
+    padding: 2px 6px;
+    border-radius: 4px;
     font-weight: 800;
     text-transform: uppercase;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     z-index: 3;
 }
 
@@ -292,8 +270,6 @@ body::after {
     align-items: center;
     justify-content: center;
     background-color: var(--card-bg);
-    /* Refinement: Subtle gradient background */
-    background: linear-gradient(to bottom, #181818, #121212);
     border: 1px solid var(--border);
     border-radius: 16px;
     padding: 24px;
@@ -355,13 +331,13 @@ body::after {
 
 /* Hover - RESTORED */
 .control-btn:hover {
-    background-color: #1a1a1a;
+    background-color: #181818;
     border-color: rgba(163, 230, 53, 0.3);
 }
 
 /* PRESS Interaction - RESTORED */
 .control-btn:active {
-    transform: scale(0.96); /* Satisfying tactile shrink */
+    transform: scale(0.95); /* Satisfying tactile shrink */
     background-color: #000;
     border-color: var(--accent);
 }
