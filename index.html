@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#080808">
+<meta name="theme-color" content="#050505">
 <title>DEC0DER</title>
 <style>
 :root {
---bg: #050505;
---card-bg: #121212;
---border: #262626;
---accent: #a3e635; /* Brighter Lime matching app bottom panel */
---accent-dark: #65a30d;
---orange: #fb923c; /* Matching the dial/power icon */
---text: #ffffff;
---text-muted: #888888;
---font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
---font-mono: "SF Mono", "Monaco", "Inconsolata", "Fira Mono", monospace;
+    --bg: #050505;
+    --card-bg: #121212;
+    --border: #262626;
+    --accent: #a3e635; /* Neon Lime */
+    --accent-glow: rgba(163, 230, 53, 0.4);
+    --orange: #fb923c;
+    --text: #ffffff;
+    --text-muted: #666666;
+    --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: "SF Mono", "Monaco", "Inconsolata", "Fira Mono", monospace;
 }
 
 * {
@@ -24,436 +24,207 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-/* Layout - Allow scrolling if content is tall, but hide scrollbars */
 html, body {
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    scrollbar-width: none; /* Firefox */
-}
-
-body::-webkit-scrollbar { 
-    display: none; /* Chrome/Safari */
-}
-
-body {
+    overflow: hidden; /* Non-scrollable as requested */
     background-color: var(--bg);
     color: var(--text);
     font-family: var(--font-main);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Centers vertically if content is short */
-    min-height: 100%;
-    -webkit-font-smoothing: antialiased;
+    justify-content: center;
+}
+
+/* Subtle Vignette Background */
+body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, transparent 0%, #000 120%);
+    pointer-events: none;
+    z-index: -1;
 }
 
 .container {
-    max-width: 360px;
+    max-width: 380px;
     width: 100%;
-    padding: 40px 24px; /* More top/bottom padding for scroll */
+    padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 32px; /* Increased gap for better separation of sections */
-    animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    margin: auto; /* Keeps it centered in flex body */
+    gap: 28px; /* Slightly tighter gap for single screen fit */
+    opacity: 0;
+    animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    position: relative;
+    z-index: 1;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: scale(0.98) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-/* --- HEADER / LOGO --- */
-.header {
-    text-align: center;
-    margin-bottom: 0px;
-}
+/* --- HEADER --- */
+.header { text-align: center; margin-bottom: 8px; }
 
 .logo {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.8rem;
-    font-weight: 800;
-    letter-spacing: 3px;
-    color: var(--accent); /* Light green text */
+    font-size: 3rem; /* Slightly larger */
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: var(--accent);
     line-height: 1;
     user-select: none;
-    -webkit-user-select: none;
+    text-shadow: 0 0 20px var(--accent-glow);
 }
 
-/* Power Button Icon construction */
 .power-icon {
     position: relative;
-    width: 0.72em;
-    height: 0.72em;
-    border: 0.13em solid var(--orange);
+    width: 0.65em;
+    height: 0.65em;
+    border: 0.14em solid var(--orange);
     border-radius: 50%;
-    margin: 0 5px;
-    box-sizing: border-box;
-    display: inline-block;
-    transform: translateY(-0.06em); /* Shifted up slightly per request */
-    box-shadow: 0 0 20px rgba(251, 146, 60, 0.25);
+    margin: 0 8px;
+    /* Adjusted: Previously -0.06em. Moving down approx 3px relative to 3rem font */
+    transform: translateY(0.04em); 
+    box-shadow: 0 0 15px rgba(251, 146, 60, 0.4);
 }
 
 .power-icon::before {
-    content: '';
-    position: absolute;
-    top: -0.13em;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0.25em;
-    height: 0.25em;
-    background-color: var(--bg);
+    content: ''; position: absolute; top: -0.14em; left: 50%; transform: translateX(-50%);
+    width: 0.3em; height: 0.3em; background-color: var(--bg);
 }
 
 .power-icon::after {
-    content: '';
-    position: absolute;
-    top: -0.22em;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0.13em;
-    height: 0.42em;
-    background-color: var(--orange);
-    border-radius: 2px;
+    content: ''; position: absolute; top: -0.25em; left: 50%; transform: translateX(-50%);
+    width: 0.14em; height: 0.45em; background-color: var(--orange); border-radius: 2px;
+    box-shadow: 0 0 5px rgba(251, 146, 60, 0.8);
 }
 
 .subtitle {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    margin-top: 12px;
-    font-weight: 600;
-    user-select: none;
+    font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;
+    letter-spacing: 4px; margin-top: 14px; font-weight: 700; opacity: 0.8;
 }
 
-/* --- SECTIONS --- */
-
+/* --- LABELS --- */
 .label {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    padding-left: 4px;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;
+    letter-spacing: 2px; font-weight: 700; margin-bottom: 10px;
+    padding-left: 4px; user-select: none; display: flex; align-items: center; gap: 10px;
+    opacity: 0.8;
 }
-
 .label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--border), transparent);
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, #333, transparent);
 }
 
-/* ========================================= */
-/* PRIMARY ACTION: APP STORE (THE "FUN" ONE) */
-/* ========================================= */
+/* --- ACTION: STORE BTN --- */
 .store-btn {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    background-color: var(--accent); /* High contrast lime */
-    color: #000; /* Black text on lime */
-    text-decoration: none;
-    padding: 20px;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px -10px rgba(163, 230, 53, 0.5);
-    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-select: none;
-    border: 2px solid var(--accent); /* Solid border */
+    position: relative; display: flex; align-items: center; justify-content: center; gap: 18px;
+    background-color: var(--accent); color: #000; text-decoration: none;
+    padding: 22px; border-radius: 20px; overflow: hidden;
+    box-shadow: 0 0 40px -10px var(--accent-glow);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s, filter 0.2s;
+    cursor: pointer; user-select: none; border: 2px solid var(--accent);
 }
-
-/* Interaction */
-.store-btn:active {
-    transform: scale(0.96);
-    box-shadow: 0 4px 12px -4px rgba(163, 230, 53, 0.5);
-}
-
-/* Refined Background Pattern - "Tech Grid" */
+.store-btn:active { transform: scale(0.97); filter: brightness(0.9); }
+/* Grid Animation */
 .store-btn::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    
-    /* Clean technical grid lines */
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
     background-image: 
-        linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
-    background-size: 24px 24px;
-    
-    /* Slight rotation for dynamic feel */
-    transform: rotate(-12deg);
-    
-    /* Smooth scrolling animation */
-    animation: techGridScroll 3s linear infinite;
-    pointer-events: none;
+        linear-gradient(rgba(0,0,0,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.08) 1px, transparent 1px);
+    background-size: 20px 20px; transform: rotate(-12deg);
+    animation: techGridScroll 4s linear infinite; pointer-events: none;
 }
+@keyframes techGridScroll { 0% { background-position: 0 0; } 100% { background-position: 20px 0; } }
 
-@keyframes techGridScroll {
-    0% { background-position: 0 0; }
-    100% { background-position: 24px 0; }
-}
-
-.icon-apple-dark {
-    width: 32px;
-    height: 32px;
-    fill: #000;
-    flex-shrink: 0;
-    z-index: 2;
-}
-
-.store-content {
-    display: flex;
-    flex-direction: column;
-    z-index: 2;
-}
-
-.store-sub {
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    opacity: 0.7;
-}
-
-.store-main {
-    font-size: 1.25rem;
-    font-weight: 900;
-    letter-spacing: -0.5px;
-    line-height: 1.1;
-}
-
-/* "New" Badge */
 .badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #000;
-    color: var(--accent);
-    font-size: 0.5rem;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: 800;
-    text-transform: uppercase;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    z-index: 3;
+    position: absolute; top: 12px; right: 12px;
+    background: #000; color: var(--accent);
+    font-size: 0.55rem; padding: 3px 7px; border-radius: 6px; font-weight: 900;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 3;
 }
+.store-content { display: flex; flex-direction: column; z-index: 2; align-items: flex-start; }
+.store-sub { font-size: 0.6rem; text-transform: uppercase; font-weight: 800; opacity: 0.6; letter-spacing: 0.5px; }
+.store-main { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.5px; line-height: 1; margin-top: 2px; }
 
-
-/* ========================================= */
-/* SECONDARY ACTION: SUPPORT (RESTORED VIBRANT STYLE) */
-/* ========================================= */
-
-/* Unified "Tactile" Design */
+/* --- ACTION: CONTROL BTN --- */
 .control-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 24px;
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
-    
-    /* Core Interaction Props */
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation; /* Optimizes for touch */
-
-    /* Transitions */
-    transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), 
-                background-color 0.2s, 
-                border-color 0.2s;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background-color: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 18px; padding: 26px; text-decoration: none; position: relative;
+    overflow: hidden; cursor: pointer; user-select: none;
+    transition: transform 0.15s, background-color 0.2s, border-color 0.2s;
 }
+.control-btn:hover { background-color: #1a1a1a; border-color: rgba(163, 230, 53, 0.2); }
+.control-btn:active { transform: scale(0.97); background-color: #080808; border-color: var(--accent); }
 
-/* "Always On" Lit Indicator - RESTORED ACCENT */
+/* Status Light */
 .control-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px; /* Always visible */
-    height: 3px;
-    background-color: var(--accent);
-    box-shadow: 0 0 12px var(--accent); /* Permanent Glow */
-    border-radius: 0 0 2px 2px;
-    transition: width 0.1s ease-out, height 0.1s ease-out, box-shadow 0.1s;
-    z-index: 2;
+    content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 40px; height: 3px; background-color: var(--accent);
+    box-shadow: 0 0 15px var(--accent); border-radius: 0 0 4px 4px;
+    transition: width 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s; z-index: 2;
 }
+.control-btn:active::before { width: 60%; height: 4px; box-shadow: 0 0 30px var(--accent); }
 
-/* Fun "Scanline" Animation */
+/* Scanline */
 .control-btn::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-        to bottom,
-        transparent 0%,
-        rgba(163, 230, 53, 0.03) 50%,
-        transparent 100%
-    );
-    background-size: 100% 200%;
-    animation: scan 3s infinite linear;
-    pointer-events: none;
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 0%, rgba(163, 230, 53, 0.02) 50%, transparent 100%);
+    background-size: 100% 200%; animation: scan 4s infinite linear; pointer-events: none;
 }
+@keyframes scan { 0% { transform: translateY(-120%); } 100% { transform: translateY(120%); } }
 
-@keyframes scan {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(100%); }
-}
-
-/* Hover - RESTORED */
-.control-btn:hover {
-    background-color: #181818;
-    border-color: rgba(163, 230, 53, 0.3);
-}
-
-/* PRESS Interaction - RESTORED */
-.control-btn:active {
-    transform: scale(0.95); /* Satisfying tactile shrink */
-    background-color: #000;
-    border-color: var(--accent);
-}
-
-/* Power Surge Effect on Press - RESTORED */
-.control-btn:active::before {
-    width: 100%; /* Expands fully instantly */
-    height: 4px;
-    box-shadow: 0 0 25px var(--accent); /* Intense glow */
-}
-
-/* Content Children */
 .email-text {
-    color: var(--accent);
-    font-family: var(--font-mono);
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    margin-top: 8px;
-    transition: all 0.2s;
-    text-shadow: 0 0 5px rgba(163, 230, 53, 0.2);
-    word-break: break-all; /* Safety for small screens */
-    text-align: center;
+    color: var(--accent); font-family: var(--font-mono); font-size: 0.95rem; font-weight: 600;
+    letter-spacing: 0.5px; margin-top: 10px; transition: all 0.2s;
+    text-shadow: 0 0 8px rgba(163, 230, 53, 0.3); text-align: center;
 }
+.control-btn:active .email-text { color: #fff; text-shadow: 0 0 15px var(--accent); }
+.icon-svg { width: 26px; height: 26px; transition: all 0.2s; z-index: 2; opacity: 0.9; }
+.control-btn:active .icon-svg { transform: scale(0.9); filter: drop-shadow(0 0 8px var(--accent)); stroke: #fff; opacity: 1; }
 
-.icon-mail {
-    width: 24px;
-    height: 24px;
-    stroke: #777;
-    stroke-width: 2;
-    fill: none;
-    transition: all 0.2s;
-    filter: drop-shadow(0 0 2px rgba(0,0,0,0.5));
-}
-
-/* Active State Text/Icon Changes - RESTORED */
-.control-btn:active .email-text {
-    color: #fff;
-    text-shadow: 0 0 10px var(--accent);
-}
-
-.control-btn:active .icon-mail {
-    stroke: #fff;
-    transform: scale(0.9);
-    filter: drop-shadow(0 0 5px var(--accent));
-}
-
-/* Privacy Panel - RESTORED */
+/* --- PRIVACY PANEL --- */
 .mission-panel {
-    background-color: var(--card-bg);
+    background-color: rgba(18, 18, 18, 0.6); /* Slightly transparent */
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    position: relative;
-    background-image: radial-gradient(#262626 1px, transparent 1px);
-    background-size: 6px 6px;
+    border-radius: 14px; padding: 18px 22px; position: relative;
+    background-image: radial-gradient(#262626 1px, transparent 1px); background-size: 8px 8px;
+    backdrop-filter: blur(5px);
 }
-
 .mission-panel::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 12px;
-    bottom: 12px;
-    width: 3px;
-    background-color: var(--accent);
-    border-radius: 0 2px 2px 0;
-    box-shadow: 0 0 8px rgba(163, 230, 53, 0.2);
+    content: ''; position: absolute; left: 0; top: 16px; bottom: 16px; width: 3px;
+    background-color: var(--accent); border-radius: 0 2px 2px 0;
+    box-shadow: 0 0 10px rgba(163, 230, 53, 0.3);
 }
-
 .mission-title {
-    color: var(--text-muted);
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 700;
-    margin-bottom: 8px;
+    color: var(--text-muted); font-size: 0.65rem; text-transform: uppercase;
+    letter-spacing: 2px; font-weight: 800; margin-bottom: 6px;
 }
+.mission-text { color: #ddd; font-size: 0.85rem; line-height: 1.5; font-weight: 400; }
+.highlight { color: var(--accent); font-weight: 700; text-shadow: 0 0 8px rgba(163,230,53,0.2); }
 
-.mission-text {
-    color: var(--text);
-    font-size: 0.9rem;
-    line-height: 1.5;
-}
-
-.highlight {
-    color: var(--accent);
-    font-weight: 600;
-}
-
-/* Footer */
+/* --- FOOTER --- */
 footer {
-    margin-top: 12px;
-    text-align: center;
-    color: #333;
-    font-size: 0.7rem;
-    font-family: var(--font-mono);
-    letter-spacing: 1px;
-    user-select: none;
-    padding-bottom: 10px;
+    margin-top: 8px; text-align: center; color: #444; font-size: 0.65rem;
+    font-family: var(--font-mono); letter-spacing: 1px; user-select: none;
 }
 
 </style>
-<script type="importmap">
-{
-"imports": {
-"lucide-react": "https://esm.sh/lucide-react@^0.562.0",
-"react": "https://esm.sh/react@^19.2.3",
-"react/": "https://esm.sh/react@^19.2.3/"
-}
-}
-</script>
 </head>
 <body>
+
 <div class="container">
     
+    <!-- HEADER -->
     <header class="header">
         <div class="logo">
             <span>DEC</span>
@@ -463,12 +234,13 @@ footer {
         <div class="subtitle">Official Terminal</div>
     </header>
 
-    <!-- TOP: DOWNLOAD BUTTON (Marketing Primary) -->
+    <!-- STORE BUTTON -->
     <div>
-        <span class="label">System Acquisition</span>
-        <a href="#" class="store-btn" role="button" aria-label="Download on the App Store">
+        <div class="label">System Acquisition</div>
+        <a href="#" class="store-btn">
             <div class="badge">V1.0</div>
-            <svg class="icon-apple-dark" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <!-- Apple Icon -->
+            <svg class="icon-svg" style="width: 30px; height: 30px; fill: #000;" viewBox="0 0 24 24">
                 <path d="M17.1,12.7c0-2.6,2.1-3.8,2.2-3.9c-1.2-1.7-3.1-2-3.7-2c-1.6-0.2-3.1,0.9-3.9,0.9c-0.8,0-2-0.9-3.3-0.9 c-1.7,0-3.3,1-4.2,2.6c-1.8,3.1-0.5,7.6,1.2,10.1c0.9,1.2,1.9,2.6,3.2,2.5c1.3-0.1,1.8-0.8,3.3-0.8c1.6,0,2,0.8,3.4,0.8 c1.4,0,2.3-1.2,3.1-2.4c1-1.4,1.4-2.8,1.4-2.9C21,15.7,17.1,14.2,17.1,12.7 M14.3,5.3c0.7-0.9,1.2-2.1,1.1-3.3 c-1.1,0-2.4,0.7-3.1,1.6c-0.7,0.8-1.2,2.1-1.1,3.2C12.3,6.9,13.6,6.2,14.3,5.3"/>
             </svg>
             <div class="store-content">
@@ -478,11 +250,12 @@ footer {
         </a>
     </div>
 
-    <!-- BOTTOM: SUPPORT CONTROLS (Secondary) -->
+    <!-- SUPPORT BUTTON -->
     <div>
-        <span class="label">Direct Contact</span>
-        <a href="mailto:DEC0DER183@GMAIL.COM" class="control-btn" role="button" aria-label="Email Support">
-            <svg class="icon-mail" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <div class="label">Direct Contact</div>
+        <a href="mailto:DEC0DER183@GMAIL.COM" class="control-btn">
+            <!-- Mail Icon -->
+            <svg class="icon-svg" style="stroke: #777; stroke-width: 2; fill: none;" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="2" y="4" width="20" height="16" rx="2"></rect>
                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
             </svg>
@@ -490,8 +263,9 @@ footer {
         </a>
     </div>
 
+    <!-- PRIVACY -->
     <div>
-        <span class="label">Privacy Protocol</span>
+        <div class="label">Privacy Protocol</div>
         <div class="mission-panel">
             <div class="mission-title">Mission Goal</div>
             <div class="mission-text">
@@ -500,10 +274,9 @@ footer {
         </div>
     </div>
 
-    <footer>
-        &copy; 2025 DEC0DER SYSTEM
-    </footer>
+    <footer>&copy; 2025 DEC0DER SYSTEM</footer>
 
 </div>
+
 </body>
 </html>
