@@ -83,19 +83,42 @@ body::before {
     text-shadow: 0 0 25px var(--accent-glow);
 }
 
-/* Power Icon: SVG implementation for perfect transparency (no black box artifacts) */
-.power-icon-svg {
-    width: 0.78em; /* Increased size from 0.68em */
-    height: 0.78em;
-    margin: 0 6px;
-    color: var(--orange);
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 3;
-    stroke-linecap: round;
-    /* Adjusted up by ~3px (0.12em -> 0.05em) */
-    transform: translateY(0em); 
-    filter: drop-shadow(0 0 8px rgba(251, 146, 60, 0.6));
+/* Power Button Icon construction */
+.power-icon {
+    position: relative;
+    width: 0.72em;
+    height: 0.72em;
+    border: 0.13em solid var(--orange);
+    border-radius: 50%;
+    margin: 0 5px;
+    box-sizing: border-box;
+    display: inline-block;
+    /* Shifted down 3px as requested */
+    transform: translateY(3px);
+    box-shadow: 0 0 20px rgba(251, 146, 60, 0.25);
+}
+
+.power-icon::before {
+    content: '';
+    position: absolute;
+    top: -0.13em;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0.25em;
+    height: 0.25em;
+    background-color: var(--bg);
+}
+
+.power-icon::after {
+    content: '';
+    position: absolute;
+    top: -0.22em;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0.13em;
+    height: 0.42em;
+    background-color: var(--orange);
+    border-radius: 2px;
 }
 
 .subtitle {
@@ -206,6 +229,14 @@ footer {
 }
 
 </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react/": "https://esm.sh/react@^19.2.3/"
+  }
+}
+</script>
 </head>
 <body>
 
@@ -215,11 +246,8 @@ footer {
     <header class="header">
         <div class="logo">
             <span>DEC</span>
-            <!-- SVG Power Icon: Transparent, Scalable, Artifact-free -->
-            <svg class="power-icon-svg" viewBox="0 0 24 24">
-                <path d="M12 2v8"></path>
-                <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
-            </svg>
+            <!-- CSS Power Icon (Restored & Shifted down 3px) -->
+            <div class="power-icon"></div>
             <span>DER</span>
         </div>
         <div class="subtitle">Official Terminal</div>
